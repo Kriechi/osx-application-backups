@@ -1,21 +1,37 @@
 #!/usr/bin/osascript
 
-set myBackupName to "AddressBook.vcf"
+-- by Thomas Kriechbaumer
 
-set myTimeStamp to (year of (current date)) & (month of (current date) as number) & (day of (current date))
-set myBackupPath to the (path to the documents folder as string) & myTimeStamp & "-" & myBackupName as string
+on run argv
+  try
+    set filepath to item 1 of argv
+  on error
+    return "path required as first argument"
+  end try
 
-tell application "Finder"
-  if exists (file myBackupPath) then
-    delete file myBackupPath
-  end if
-end tell
+  try
+    set filename to item 2 of argv
+  on error
+    return "filename required as second argument without file extension"
+  end try
 
-tell application "Contacts"
-  set myBackupFile to (open for access file myBackupPath with write permission)
+  set SecondsDelay to 1
 
-  repeat with per in people
-    write (vcard of per as text) to myBackupFile
-  end repeat
-  close access myBackupFile
-end tell
+  tell application "Contacts"
+    activate
+    delay SecondsDelay
+    reopen
+    activate
+  end tell
+
+  tell application "Contacts"
+    set fullfilepath to (filepath & "/" & filename & ".vcf")
+    display dialog fullfilepath
+    set exportfile to (open for access file fullfilepath with write permission)
+
+    repeat with per in people
+      write (vcard of per as text) to exportfile
+    end repeat
+    close access exportfile
+  end tell
+end run
