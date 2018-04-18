@@ -25,7 +25,7 @@ on run argv
   end tell
 
   tell application "System Events" to tell process "Contacts"
-    click menu item "Contacts Archive…" of menu "Export…" of menu item "Export…" of menu "File" of menu bar item "File" of menu bar 1
+    click menu item "Contacts Archive…" of menu "Export" of menu item "Export" of menu "File" of menu bar item "File" of menu bar 1
     delay SecondsDelay
     keystroke "g" using {command down, shift down}
     delay SecondsDelay
